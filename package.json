@@ -1,0 +1,18 @@
+{
+  "name": "acowale_saas_test",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "frontenddev": "pnpm run --filter frontend dev",
+    "backenddev": "pnpm run --filter backend dev",
+    "frontendstart": "pnpm run --filter frontend start",
+    "backendstart": "pnpm run --filter backend start",
+    "backendbuild": "pnpm run --filter backend build",
+    "frontendbuild": "pnpm run --filter frontend build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
