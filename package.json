@@ -9,6 +9,7 @@
     "backenddev": "pnpm run --filter backend dev",
     "frontendstart": "pnpm run --filter frontend start",
     "backendstart": "pnpm run --filter backend start",
+    "backenddeploystart": "pnpm run --filter backend deploystart",
     "backendbuild": "pnpm run --filter backend build",
     "frontendbuild": "pnpm run --filter frontend build"
   },
