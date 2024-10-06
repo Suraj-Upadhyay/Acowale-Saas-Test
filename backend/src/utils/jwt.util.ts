@@ -5,6 +5,7 @@ export function getTokenPayloadForUser(user: User) {
   return {
     id: user.user_id,
     username: user.username,
+    role: user.role
   };
 }
 

@@ -9,6 +9,7 @@ declare global {
       user_info?: {
         user_id: number;
         username: string;
+        role: string;
       };
     }
   }

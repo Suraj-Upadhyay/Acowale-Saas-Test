@@ -9,7 +9,7 @@ export async function authorize(
   try {
     const jwt = req.cookies["jwt"];
     const decodedToken = decodeToken(jwt);
-    req.user_info = decodedToken as { user_id: number; username: string };
+    req.user_info = decodedToken as { user_id: number; username: string; role: string };
     next();
   } catch (error) {
     console.error("Error occurred in authorize: ", error);

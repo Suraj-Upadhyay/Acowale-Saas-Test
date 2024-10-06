@@ -58,7 +58,7 @@ export async function login(req: Request, res: Response): Promise<void> {
 
 export async function signup(req: Request, res: Response): Promise<void> {
   try {
-    const { username, password, email } = req.body;
+    const { username, password, email, role } = req.body;
 
     const passwordObject = encryptPassword(password);
 
@@ -69,6 +69,7 @@ export async function signup(req: Request, res: Response): Promise<void> {
         password_salt: passwordObject.salt,
         password_iterations: passwordObject.iterations,
         email: email,
+        role: role
       },
     });
 

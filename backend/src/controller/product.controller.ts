@@ -84,6 +84,18 @@ export const getProduct = async (req: Request, res: Response) => {
       return;
     }
 
+    if (
+      req.user_info !== undefined &&
+      (product.user_id !== req.user_info.user_id &&
+        req.user_info.role !== "ADMIN")
+    ) {
+      res.status(403).json({
+        status: "Forbidden",
+        message: "User does not have proper rights to access the product"
+      });
+      return;
+    }
+
     // Respond with the found product
     res.status(200).json({ status: "Success", data: product });
   } catch (error) {
@@ -118,6 +130,37 @@ export const updateProduct = async (req: Request, res: Response) => {
       return;
     }
 
+    // Find the product by ID
+    const product = await prisma.product.findUnique({
+      where: {
+        product_id: parseInt(id) // Convert id to an integer
+      },
+      include: {
+        user: true // Optionally, include related user data
+      }
+    });
+
+    // Check if the product exists
+    if (!product) {
+      res.status(404).json({
+        status: "Failed",
+        message: "Product not found"
+      });
+      return;
+    }
+
+    if (
+      req.user_info !== undefined &&
+      (product.user_id !== req.user_info.user_id &&
+        req.user_info.role !== "ADMIN")
+    ) {
+      res.status(403).json({
+        status: "Forbidden",
+        message: "User does not have proper rights to access the product"
+      });
+      return;
+    }
+
     // Find and update the product
     const updatedProduct = await prisma.product.update({
       where: { product_id: parseInt(id) }, // Convert id to an integer
@@ -127,15 +170,6 @@ export const updateProduct = async (req: Request, res: Response) => {
         price: price ? parseInt(price) : undefined // Convert price to integer if provided
       }
     });
-
-    // If product not found, return 404
-    if (!updatedProduct) {
-      res.status(404).json({
-        status: "Failed",
-        message: "Product not found"
-      });
-      return;
-    }
 
     // Respond with the updated product
     res.status(200).json({
@@ -163,6 +197,36 @@ export const deleteProduct = async (req: Request, res: Response) => {
         message: "Invalid product ID"
       });
       return;
+    }
+
+    // Find the product by ID
+    const product = await prisma.product.findUnique({
+      where: {
+        product_id: parseInt(id) // Convert id to an integer
+      },
+      include: {
+        user: true // Optionally, include related user data
+      }
+    });
+
+    // Check if the product exists
+    if (!product) {
+      res.status(404).json({
+        status: "Failed",
+        message: "Product not found"
+      });
+      return;
+    }
+
+    if (
+      req.user_info !== undefined &&
+      (product.user_id !== req.user_info.user_id &&
+        req.user_info.role !== "ADMIN")
+    ) {
+      res.status(403).json({
+        status: "Forbidden",
+        message: "User does not have proper rights to access the product"
+      });
     }
 
     // Delete the product by ID
@@ -193,8 +257,17 @@ export const deleteProduct = async (req: Request, res: Response) => {
   }
 };
 
-export const getAllProducts = async (_: Request, res: Response) => {
+export const getAllProducts = async (req: Request, res: Response) => {
   try {
+    if (
+      req.user_info === undefined ||
+      (req.user_info !== undefined && req.user_info.role !== "ADMIN")
+    ) {
+      res.status(403).json({
+        status: "Forbidden",
+        message: "Operation forbidden for the user"
+      });
+    }
     // Fetch all products from the database
     const products = await prisma.product.findMany({
       include: {
