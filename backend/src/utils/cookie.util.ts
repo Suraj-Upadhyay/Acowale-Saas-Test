@@ -8,7 +8,7 @@ export async function setCookie(name: string, payload: string, res: Response) {
       maxAge: 24 * 60 * 60 * 1000, // 1 Day in  milliseconds
       httpOnly: true,
       sameSite: "none",
-      secure: false,
+      secure: true,
       path: "/"
     });
   } catch (error) {

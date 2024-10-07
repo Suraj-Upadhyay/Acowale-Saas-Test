@@ -3,10 +3,11 @@ import { prisma } from "../helpers/prisma.helper";
 
 export const createProduct = async (req: Request, res: Response) => {
   try {
-    const { product_name, product_description, price, user_id } = req.body;
+    const { product_name, product_description, price } = req.body;
+    const username = req.user_info?.username;
 
     // Validate required fields
-    if (!product_name || !price || !user_id) {
+    if (!product_name || !price) {
       res.status(400).json({
         status: "Failed",
         message: "Missing required fields: product_name, price, and user_id"
@@ -16,7 +17,7 @@ export const createProduct = async (req: Request, res: Response) => {
 
     // Check if the user exists
     const user = await prisma.user.findUnique({
-      where: { user_id: parseInt(user_id) } // Convert user_id to integer
+      where: { username: username } // Convert user_id to integer
     });
 
     if (!user) {

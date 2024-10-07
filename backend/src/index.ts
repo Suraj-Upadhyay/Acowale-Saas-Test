@@ -16,7 +16,7 @@ app.use(Express.json());
 
 app.use(rateLimit({
   windowMs: 5 * 60 * 1000,
-  limit: 10,
+  limit: 100,
 }));
 
 app.use(router);

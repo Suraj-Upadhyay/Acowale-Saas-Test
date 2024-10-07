@@ -19,7 +19,7 @@ const Dashboard = () => {
 
   const handleLogout = async () => {
     try {
-      await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/user/logout`);
+      await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/user/logout`, {withCredentials: true});
       localStorage.removeItem("token"); // Remove token from local storage
       router.push("/auth/signin");
     } catch (err) {
@@ -35,14 +35,14 @@ const Dashboard = () => {
   useAsyncEffect(() => {
     const fetchProducts = async () => {
       try {
-        const token = localStorage.getItem("token"); // Retrieve JWT token from local storage
+        // const token = localStorage.getItem("token"); // Retrieve JWT token from local storage
         const res = await axios.get(
           `${process.env.NEXT_PUBLIC_API_URL}/product/all`,
           {
-            headers: { Authorization: `Bearer ${token}`, withCredentials: true }
+            withCredentials: true
           }
         );
-        setProducts(res.data);
+        setProducts(res.data.data);
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (err) {
         setError("Failed to load products");

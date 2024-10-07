@@ -10,12 +10,10 @@ const CreateProductPage = () => {
 
   const handleProductSubmit = async (productData: ProductFormValues) => {
     try {
-      const token = localStorage.getItem("token"); // Retrieve JWT token
       await axios.post(
         `${process.env.NEXT_PUBLIC_API_URL}/product`,
         productData,
         {
-          headers: { Authorization: `Bearer ${token}` },
           withCredentials: true
         }
       );
