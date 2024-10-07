@@ -20,14 +20,15 @@ const SignIn = () => {
           username,
           email,
           password
-        }
+        },
+        { withCredentials: true }
       );
 
       if (res.data) {
         localStorage.setItem("token", res.data.token); // Save JWT token to local storage
         router.push("/dashboard");
       }
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (err) {
       setError("Invalid login credentials");
     }
