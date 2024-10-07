@@ -58,7 +58,8 @@ export async function login(req: Request, res: Response): Promise<void> {
 
 export async function signup(req: Request, res: Response): Promise<void> {
   try {
-    const { username, password, email, role } = req.body;
+    console.log("In Signup");
+    const { username, password, email, role="USER" } = req.body;
 
     const passwordObject = encryptPassword(password);
 

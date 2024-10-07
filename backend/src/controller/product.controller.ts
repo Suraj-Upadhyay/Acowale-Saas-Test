@@ -267,6 +267,7 @@ export const getAllProducts = async (req: Request, res: Response) => {
         status: "Forbidden",
         message: "Operation forbidden for the user"
       });
+      return;
     }
     // Fetch all products from the database
     const products = await prisma.product.findMany({

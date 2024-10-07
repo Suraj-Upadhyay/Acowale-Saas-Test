@@ -21,6 +21,15 @@ body {
 }
 
 @layer utilities {
+  .center {
+    @apply absolute top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%]
+  }
+  .centerx {
+    @apply absolute left-[50%] -translate-x-[50%]
+  }
+  .centery {
+    @apply absolute top-[50%] -translate-y-[50%]
+  }
   .text-balance {
     text-wrap: balance;
   }

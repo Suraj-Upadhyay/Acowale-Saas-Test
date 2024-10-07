@@ -1,17 +1,20 @@
 import { Router } from "express";
-import { authorize } from "../middleware/authorize.middleware";
 import {
-  createProduct,
-  deleteProduct,
   getProduct,
-  updateProduct
+  createProduct,
+  updateProduct,
+  deleteProduct,
+  getAllProducts
 } from "../controller/product.controller";
+import { authorize } from "../middleware/authorize.middleware";
 
 const router = Router();
 
-router.route("/").post(authorize, createProduct);
-router.route("/:id").get(authorize, getProduct);
-router.route("/:id").put(authorize, updateProduct);
-router.route("/:id").delete(authorize, deleteProduct);
+router.get("/all", authorize, getAllProducts); // GET /product/all
 
-router.route("/all").get(authorize);
+router.post("/", authorize, createProduct); // POST /product
+router.get("/:id", authorize, getProduct); // GET /product/:id
+router.put("/:id", authorize, updateProduct); // PUT /product/:id
+router.delete("/:id", authorize, deleteProduct); // DELETE /product/:id
+
+export default router;
