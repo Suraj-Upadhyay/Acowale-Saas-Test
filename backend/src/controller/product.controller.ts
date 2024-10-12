@@ -260,25 +260,42 @@ export const deleteProduct = async (req: Request, res: Response) => {
 
 export const getAllProducts = async (req: Request, res: Response) => {
   try {
-    if (
-      req.user_info === undefined ||
-      (req.user_info !== undefined && req.user_info.role !== "ADMIN")
-    ) {
+    const userInfo = req.user_info;
+    const userId = userInfo?.user_id; // Assuming user ID is available in user_info
+
+    if (!userInfo) {
       res.status(403).json({
         status: "Forbidden",
-        message: "Operation forbidden for the user"
+        message: "User information is missing"
       });
       return;
     }
-    // Fetch all products from the database
-    const products = await prisma.product.findMany({
-      include: {
-        user: true // Optionally include related user data
-      }
-    });
 
-    // Respond with the list of products
-    res.status(200).json({ status: "Success", data: products });
+    // Check if the user is an admin
+    if (userInfo.role === "ADMIN") {
+      // Fetch all products from the database
+      const products = await prisma.product.findMany({
+        include: {
+          user: true // Optionally include related user data
+        }
+      });
+
+      // Respond with the list of all products
+      res.status(200).json({ status: "Success", data: products });
+    } else {
+      // Fetch products owned by the user
+      const products = await prisma.product.findMany({
+        where: {
+          user_id: userId // Assuming there is a userId field in the product model
+        },
+        include: {
+          user: true // Optionally include related user data
+        }
+      });
+
+      // Respond with the list of user-owned products
+      res.status(200).json({ status: "Success", data: products });
+    }
   } catch (error) {
     console.error("An Error occurred in getAllProducts controller: ", error);
     res.status(500).json({
